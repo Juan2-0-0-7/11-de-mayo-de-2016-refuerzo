@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<!-- 
+  index.html - Página principal del módulo de Desarrollo Web
+  Contiene la estructura base: menú de navegación, secciones informativas,
+  canvas de fondo animado y enlace a recursos del módulo.
+  Autor: Módulo de Desarrollo Web
+-->
+<html lang="es">
+<head>
+  <!-- Meta información básica del documento -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Desarrollo Web | Módulo Informativo</title>
+
+  <!-- Enlace a la hoja de estilos externa -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Fonts: Cinzel para títulos épicos, Rajdhani para cuerpo de texto -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- =============================================
+       CANVAS DE FONDO - Puntos cayendo animados
+       El script.js controla la animación de puntos
+  ============================================= -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- =============================================
+       CURSOR PERSONALIZADO - Espada SVG
+       Reemplaza el cursor del mouse por defecto
+  ============================================= -->
+  <div class="cursor-sword" id="cursor"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
+
+  <!-- =============================================
+       HEADER / BARRA DE NAVEGACIÓN PRINCIPAL
+       Contiene logo y menú con enlaces a secciones
+  ============================================= -->
+  <header class="navbar" id="navbar">
+    <!-- Logo del módulo -->
+    <div class="logo">
+      <span class="logo-icon">⚔</span>
+      <span class="logo-text">DevWeb</span>
+    </div>
+
+    <!-- Botón hamburguesa para móviles -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Lista de navegación principal -->
+    <nav class="nav-links" id="navLinks">
+      <!-- Cada enlace navega a una sección de la página mediante anclas (#) -->
+      <a href="#inicio" class="nav-item" data-section="inicio">Inicio</a>
+      <a href="#que-es" class="nav-item" data-section="que-es">¿Qué es?</a>
+      <a href="#tecnologias" class="nav-item" data-section="tecnologias">Tecnologías</a>
+      <a href="#estructura" class="nav-item" data-section="estructura">Estructura</a>
+      <a href="#herramientas" class="nav-item" data-section="herramientas">Herramientas</a>
+      <a href="#recursos" class="nav-item" data-section="recursos">Recursos</a>
+      <a href="#contacto" class="nav-item" data-section="contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <!-- =============================================
+       SECCIÓN HERO / INICIO
+       Primera pantalla visible, presentación del módulo
+  ============================================= -->
+  <section id="inicio" class="hero-section">
+    <div class="hero-content">
+      <!-- Etiqueta decorativa -->
+      <div class="hero-badge">⚔ Módulo de Formación ⚔</div>
+
+      <!-- Título principal con letras animadas individualmente -->
+      <h1 class="hero-title">
+        <span class="title-line">Desarrollo</span>
+        <span class="title-line accent">Web</span>
+      </h1>
+
+      <!-- Subtítulo descriptivo -->
+      <p class="hero-subtitle">
+        Domina las artes del frontend y backend. Construye experiencias digitales 
+        que conquisten la web moderna.
+      </p>
+
+      <!-- Botones de acción principales -->
+      <div class="hero-buttons">
+        <a href="#que-es" class="btn btn-primary">Explorar Módulo</a>
+        <a href="#tecnologias" class="btn btn-ghost">Ver Tecnologías</a>
+      </div>
+
+      <!-- Estadísticas rápidas del módulo -->
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number" data-target="12">0</span>
+          <span class="stat-label">Semanas</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" data-target="6">0</span>
+          <span class="stat-label">Proyectos</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" data-target="30">0</span>
+          <span class="stat-label">Tecnologías</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flecha indicadora de scroll hacia abajo -->
+    <div class="scroll-indicator">
+      <span>Desliza</span>
+      <div class="scroll-arrow">▼</div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       SECCIÓN: ¿QUÉ ES EL DESARROLLO WEB?
+       Explicación conceptual del módulo
+  ============================================= -->
+  <section id="que-es" class="section">
+    <div class="container">
+      <!-- Encabezado de sección con línea decorativa -->
+      <div class="section-header">
+        <span class="section-tag">Fundamentos</span>
+        <h2 class="section-title">¿Qué es el Desarrollo Web?</h2>
+        <p class="section-desc">El campo que da vida a la internet moderna</p>
+      </div>
+
+      <!-- Tarjetas de concepto: Frontend, Backend, Full Stack -->
+      <div class="cards-grid">
+
+        <!-- Tarjeta 1: Frontend -->
+        <div class="card" data-delay="0">
+          <div class="card-icon">🎨</div>
+          <h3 class="card-title">Frontend</h3>
+          <p class="card-text">
+            La capa visual que el usuario ve e interactúa. Combina HTML para 
+            la estructura, CSS para el diseño y JavaScript para la interactividad.
+          </p>
+          <!-- Lista de habilidades que cubre -->
+          <ul class="card-list">
+            <li>Maquetación y diseño responsivo</li>
+            <li>Interfaces de usuario dinámicas</li>
+            <li>Frameworks modernos (React, Vue)</li>
+          </ul>
+        </div>
+
+        <!-- Tarjeta 2: Backend -->
+        <div class="card" data-delay="100">
+          <div class="card-icon">⚙️</div>
+          <h3 class="card-title">Backend</h3>
+          <p class="card-text">
+            El motor invisible que procesa datos, gestiona bases de datos y 
+            sirve la lógica de negocio de las aplicaciones web.
+          </p>
+          <ul class="card-list">
+            <li>Servidores y APIs REST</li>
+            <li>Bases de datos relacionales y NoSQL</li>
+            <li>Autenticación y seguridad</li>
+          </ul>
+        </div>
+
+        <!-- Tarjeta 3: Full Stack -->
+        <div class="card" data-delay="200">
+          <div class="card-icon">🚀</div>
+          <h3 class="card-title">Full Stack</h3>
+          <p class="card-text">
+            El desarrollador que domina ambos mundos, capaz de construir 
+            aplicaciones web completas de principio a fin.
+          </p>
+          <ul class="card-list">
+            <li>Arquitectura de aplicaciones</li>
+            <li>DevOps básico y despliegue</li>
+            <li>Optimización de rendimiento</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       SECCIÓN: TECNOLOGÍAS DEL MÓDULO
+       Muestra las principales tecnologías aprendidas
+  ============================================= -->
+  <section id="tecnologias" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Arsenal</span>
+        <h2 class="section-title">Tecnologías del Módulo</h2>
+        <p class="section-desc">Las herramientas que dominarás al completar este módulo</p>
+      </div>
+
+      <!-- Grid de tecnologías con barras de progreso -->
+      <div class="tech-grid">
+
+        <!-- Tecnología HTML5 -->
+        <div class="tech-item">
+          <div class="tech-header">
+            <span class="tech-name">HTML5</span>
+            <span class="tech-percent">95%</span>
+          </div>
+          <!-- Barra de progreso animada por CSS/JS -->
+          <div class="tech-bar">
+            <div class="tech-fill" data-width="95"></div>
+          </div>
+          <p class="tech-desc">Lenguaje de marcado para estructurar el contenido web</p>
+        </div>
+
+        <!-- Tecnología CSS3 -->
+        <div class="tech-item">
+          <div class="tech-header">
+            <span class="tech-name">CSS3</span>
+            <span class="tech-percent">90%</span>
+          </div>
+          <div class="tech-bar">
+            <div class="tech-fill" data-width="90"></div>
+          </div>
+          <p class="tech-desc">Hojas de estilo para diseñar y animar interfaces</p>
+        </div>
+
+        <!-- Tecnología JavaScript -->
+        <div class="tech-item">
+          <div class="tech-header">
+            <span class="tech-name">JavaScript</span>
+            <span class="tech-percent">85%</span>
+          </div>
+          <div class="tech-bar">
+            <div class="tech-fill" data-width="85"></div>
+          </div>
+          <p class="tech-desc">Lenguaje de programación para interactividad y lógica</p>
+        </div>
+
+        <!-- Tecnología Git -->
+        <div class="tech-item">
+          <div class="tech-header">
+            <span class="tech-name">Git & GitHub</span>
+            <span class="tech-percent">80%</span>
+          </div>
+          <div class="tech-bar">
+            <div class="tech-fill" data-width="80"></div>
+          </div>
+          <p class="tech-desc">Control de versiones y trabajo colaborativo en equipo</p>
+        </div>
+
+        <!-- Tecnología Node.js -->
+        <div class="tech-item">
+          <div class="tech-header">
+            <span class="tech-name">Node.js</span>
+            <span class="tech-percent">75%</span>
+          </div>
+          <div class="tech-bar">
+            <div class="tech-fill" data-width="75"></div>
+          </div>
+          <p class="tech-desc">Entorno de ejecución JavaScript del lado del servidor</p>
+        </div>
+
+        <!-- Tecnología SQL -->
+        <div class="tech-item">
+          <div class="tech-header">
+            <span class="tech-name">SQL / MySQL</span>
+            <span class="tech-percent">70%</span>
+          </div>
+          <div class="tech-bar">
+            <div class="tech-fill" data-width="70"></div>
+          </div>
+          <p class="tech-desc">Gestión de bases de datos relacionales</p>
+        </div>
+
+      </div>
+
+      <!-- Chips de otras tecnologías menores -->
+      <div class="tech-chips">
+        <span class="chip">React</span>
+        <span class="chip">Vue.js</span>
+        <span class="chip">Bootstrap</span>
+        <span class="chip">Tailwind</span>
+        <span class="chip">REST API</span>
+        <span class="chip">JSON</span>
+        <span class="chip">Flexbox</span>
+        <span class="chip">Grid</span>
+        <span class="chip">SASS</span>
+        <span class="chip">npm</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       SECCIÓN: ESTRUCTURA DEL MÓDULO
+       Cronograma o fases del aprendizaje
+  ============================================= -->
+  <section id="estructura" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Ruta de Aprendizaje</span>
+        <h2 class="section-title">Estructura del Módulo</h2>
+        <p class="section-desc">Un camino progresivo hacia el dominio del desarrollo web</p>
+      </div>
+
+      <!-- Línea de tiempo vertical con fases del módulo -->
+      <div class="timeline">
+
+        <!-- Fase 1 -->
+        <div class="timeline-item">
+          <div class="timeline-dot">1</div>
+          <div class="timeline-content">
+            <span class="timeline-tag">Semanas 1-2</span>
+            <h3>Fundamentos Web</h3>
+            <p>Introducción a HTML5 y CSS3. Estructura de documentos, etiquetas 
+            semánticas, selectores, el modelo de caja y diseño básico.</p>
+          </div>
+        </div>
+
+        <!-- Fase 2 -->
+        <div class="timeline-item">
+          <div class="timeline-dot">2</div>
+          <div class="timeline-content">
+            <span class="timeline-tag">Semanas 3-4</span>
+            <h3>Diseño Responsivo</h3>
+            <p>Flexbox, CSS Grid, media queries y metodologías como BEM. 
+            Construcción de layouts que se adaptan a cualquier dispositivo.</p>
+          </div>
+        </div>
+
+        <!-- Fase 3 -->
+        <div class="timeline-item">
+          <div class="timeline-dot">3</div>
+          <div class="timeline-content">
+            <span class="timeline-tag">Semanas 5-7</span>
+            <h3>JavaScript Esencial</h3>
+            <p>Variables, funciones, DOM manipulation, eventos, fetch API, 
+            promesas y async/await para aplicaciones dinámicas.</p>
+          </div>
+        </div>
+
+        <!-- Fase 4 -->
+        <div class="timeline-item">
+          <div class="timeline-dot">4</div>
+          <div class="timeline-content">
+            <span class="timeline-tag">Semanas 8-10</span>
+            <h3>Backend con Node.js</h3>
+            <p>Servidores Express, rutas, middlewares, conexión a MySQL 
+            y construcción de APIs RESTful documentadas.</p>
+          </div>
+        </div>
+
+        <!-- Fase 5 -->
+        <div class="timeline-item">
+          <div class="timeline-dot">5</div>
+          <div class="timeline-content">
+            <span class="timeline-tag">Semanas 11-12</span>
+            <h3>Proyecto Final</h3>
+            <p>Aplicación web full stack desplegada en producción con 
+            control de versiones Git y documentación completa.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       SECCIÓN: HERRAMIENTAS DE DESARROLLO
+       IDEs, extensiones y software recomendado
+  ============================================= -->
+  <section id="herramientas" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Equipamiento</span>
+        <h2 class="section-title">Herramientas de Desarrollo</h2>
+        <p class="section-desc">El kit completo del desarrollador web moderno</p>
+      </div>
+
+      <!-- Grid de herramientas agrupadas por categoría -->
+      <div class="tools-grid">
+
+        <!-- Editores de código -->
+        <div class="tool-category">
+          <h3 class="tool-cat-title">💻 Editores de Código</h3>
+          <div class="tool-list">
+            <div class="tool-card">
+              <span class="tool-icon">📝</span>
+              <div>
+                <strong>VS Code</strong>
+                <p>Editor principal del módulo. Gratuito, extensible y potente.</p>
+              </div>
+            </div>
+            <div class="tool-card">
+              <span class="tool-icon">🌐</span>
+              <div>
+                <strong>WebStorm</strong>
+                <p>IDE profesional de JetBrains para JavaScript avanzado.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navegadores y DevTools -->
+        <div class="tool-category">
+          <h3 class="tool-cat-title">🌍 Navegadores & DevTools</h3>
+          <div class="tool-list">
+            <div class="tool-card">
+              <span class="tool-icon">🔵</span>
+              <div>
+                <strong>Chrome DevTools</strong>
+                <p>Inspector, consola, red y performance integrados.</p>
+              </div>
+            </div>
+            <div class="tool-card">
+              <span class="tool-icon">🦊</span>
+              <div>
+                <strong>Firefox Developer</strong>
+                <p>Herramientas avanzadas para CSS Grid y Flexbox.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Control de versiones -->
+        <div class="tool-category">
+          <h3 class="tool-cat-title">🔧 Control de Versiones</h3>
+          <div class="tool-list">
+            <div class="tool-card">
+              <span class="tool-icon">🐙</span>
+              <div>
+                <strong>GitHub</strong>
+                <p>Plataforma de colaboración y hosting de repositorios.</p>
+              </div>
+            </div>
+            <div class="tool-card">
+              <span class="tool-icon">📦</span>
+              <div>
+                <strong>Git Bash / Terminal</strong>
+                <p>Línea de comandos para control de versiones local.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Diseño y prototipado -->
+        <div class="tool-category">
+          <h3 class="tool-cat-title">🎨 Diseño & Prototipado</h3>
+          <div class="tool-list">
+            <div class="tool-card">
+              <span class="tool-icon">✏️</span>
+              <div>
+                <strong>Figma</strong>
+                <p>Diseño de interfaces colaborativo en la nube.</p>
+              </div>
+            </div>
+            <div class="tool-card">
+              <span class="tool-icon">🖼️</span>
+              <div>
+                <strong>Adobe XD</strong>
+                <p>Prototipado y animación de flujos de usuario.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       SECCIÓN: RECURSOS Y REFERENCIAS
+       Links de estudio, documentación y comunidades
+  ============================================= -->
+  <section id="recursos" class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Conocimiento</span>
+        <h2 class="section-title">Recursos del Módulo</h2>
+        <p class="section-desc">Fuentes de referencia para profundizar tu aprendizaje</p>
+      </div>
+
+      <!-- Tarjetas de recursos con categorías -->
+      <div class="resources-grid">
+
+        <!-- Documentación oficial -->
+        <div class="resource-card">
+          <div class="resource-header">
+            <span class="resource-icon">📚</span>
+            <h3>Documentación Oficial</h3>
+          </div>
+          <ul class="resource-links">
+            <li><a href="https://developer.mozilla.org" target="_blank" rel="noopener">MDN Web Docs</a></li>
+            <li><a href="https://www.w3schools.com" target="_blank" rel="noopener">W3Schools</a></li>
+            <li><a href="https://devdocs.io" target="_blank" rel="noopener">DevDocs.io</a></li>
+          </ul>
+        </div>
+
+        <!-- Cursos en línea -->
+        <div class="resource-card">
+          <div class="resource-header">
+            <span class="resource-icon">🎓</span>
+            <h3>Plataformas de Aprendizaje</h3>
+          </div>
+          <ul class="resource-links">
+            <li><a href="https://www.freecodecamp.org" target="_blank" rel="noopener">freeCodeCamp</a></li>
+            <li><a href="https://www.theodinproject.com" target="_blank" rel="noopener">The Odin Project</a></li>
+            <li><a href="https://css-tricks.com" target="_blank" rel="noopener">CSS-Tricks</a></li>
+          </ul>
+        </div>
+
+        <!-- Práctica de código -->
+        <div class="resource-card">
+          <div class="resource-header">
+            <span class="resource-icon">⚡</span>
+            <h3>Práctica en Línea</h3>
+          </div>
+          <ul class="resource-links">
+            <li><a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a></li>
+            <li><a href="https://jsfiddle.net" target="_blank" rel="noopener">JSFiddle</a></li>
+            <li><a href="https://stackblitz.com" target="_blank" rel="noopener">StackBlitz</a></li>
+          </ul>
+        </div>
+
+        <!-- Comunidades -->
+        <div class="resource-card">
+          <div class="resource-header">
+            <span class="resource-icon">👥</span>
+            <h3>Comunidades Dev</h3>
+          </div>
+          <ul class="resource-links">
+            <li><a href="https://stackoverflow.com" target="_blank" rel="noopener">Stack Overflow</a></li>
+            <li><a href="https://dev.to" target="_blank" rel="noopener">DEV Community</a></li>
+            <li><a href="https://reddit.com/r/webdev" target="_blank" rel="noopener">r/webdev</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Sección del repositorio del proyecto -->
+      <div class="repo-box">
+        <div class="repo-icon">🐙</div>
+        <div class="repo-info">
+          <h3>Repositorio del Proyecto</h3>
+          <p>Todo el código fuente de esta página está disponible en GitHub. 
+          Consulta los commits, la historia del proyecto y el código documentado.</p>
+          <!-- Enlace al repositorio de GitHub -->
+          <a href="https://github.com" target="_blank" rel="noopener" class="btn btn-primary">
+            Ver en GitHub →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       SECCIÓN: CONTACTO
+       Formulario y datos de contacto del módulo
+  ============================================= -->
+  <section id="contacto" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Comunícate</span>
+        <h2 class="section-title">Contacto</h2>
+        <p class="section-desc">¿Tienes dudas sobre el módulo? Escríbenos</p>
+      </div>
+
+      <!-- Layout principal: info izquierda + formulario derecha -->
+      <div class="contact-layout">
+
+        <!-- Bloque de información de contacto -->
+        <div class="contact-info">
+
+          <!-- Tarjeta de contacto: Email -->
+          <div class="contact-card">
+            <div class="contact-icon">📧</div>
+            <div class="contact-detail">
+              <span class="contact-label">Correo Electrónico</span>
+              <a href="mailto:modulo.devweb@instituto.edu" class="contact-value">
+                modulo.devweb@instituto.edu
+              </a>
+            </div>
+          </div>
+
+          <!-- Tarjeta de contacto: Teléfono -->
+          <div class="contact-card">
+            <div class="contact-icon">📞</div>
+            <div class="contact-detail">
+              <span class="contact-label">Teléfono / WhatsApp</span>
+              <a href="tel:+50312345678" class="contact-value">+503 1234-5678</a>
+            </div>
+          </div>
+
+          <!-- Tarjeta de contacto: Ubicación -->
+          <div class="contact-card">
+            <div class="contact-icon">📍</div>
+            <div class="contact-detail">
+              <span class="contact-label">Ubicación</span>
+              <span class="contact-value">San Salvador, El Salvador</span>
+            </div>
+          </div>
+
+          <!-- Tarjeta de contacto: Horario -->
+          <div class="contact-card">
+            <div class="contact-icon">🕐</div>
+            <div class="contact-detail">
+              <span class="contact-label">Horario de Atención</span>
+              <span class="contact-value">Lunes a Viernes · 8:00 AM – 5:00 PM</span>
+            </div>
+          </div>
+
+          <!-- Redes sociales del módulo -->
+          <div class="contact-socials">
+            <span class="contact-label">Síguenos</span>
+            <div class="social-links">
+              <a href="https://github.com" target="_blank" rel="noopener" class="social-btn" aria-label="GitHub">🐙</a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-btn" aria-label="LinkedIn">💼</a>
+              <a href="https://twitter.com" target="_blank" rel="noopener" class="social-btn" aria-label="Twitter/X">🐦</a>
+              <a href="https://discord.com" target="_blank" rel="noopener" class="social-btn" aria-label="Discord">🎮</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario de contacto -->
+        <div class="contact-form-wrapper">
+          <form class="contact-form" id="contactForm">
+
+            <!-- Fila: Nombre + Apellido -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nombre" class="form-label">Nombre</label>
+                <!-- Input de texto para el nombre del remitente -->
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  class="form-input"
+                  placeholder="Tu nombre"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="apellido" class="form-label">Apellido</label>
+                <input
+                  type="text"
+                  id="apellido"
+                  name="apellido"
+                  class="form-input"
+                  placeholder="Tu apellido"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Input de correo electrónico -->
+            <div class="form-group">
+              <label for="email" class="form-label">Correo Electrónico</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                placeholder="tucorreo@ejemplo.com"
+                required
+              />
+            </div>
+
+            <!-- Select de tema/asunto del mensaje -->
+            <div class="form-group">
+              <label for="asunto" class="form-label">Asunto</label>
+              <select id="asunto" name="asunto" class="form-input form-select" required>
+                <option value="" disabled selected>Selecciona un tema...</option>
+                <option value="inscripcion">Inscripción al módulo</option>
+                <option value="contenido">Contenido del módulo</option>
+                <option value="proyecto">Proyecto final</option>
+                <option value="tecnico">Soporte técnico</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+
+            <!-- Área de texto para el mensaje -->
+            <div class="form-group">
+              <label for="mensaje" class="form-label">Mensaje</label>
+              <textarea
+                id="mensaje"
+                name="mensaje"
+                class="form-input form-textarea"
+                placeholder="Escribe tu mensaje aquí..."
+                rows="5"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Botón de envío del formulario -->
+            <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+              <span class="btn-text">Enviar Mensaje ⚔</span>
+            </button>
+
+            <!-- Mensaje de éxito oculto por defecto, visible tras envío (JS) -->
+            <div class="form-success" id="formSuccess">
+              ✅ ¡Mensaje enviado correctamente! Te responderemos pronto.
+            </div>
+
+          </form>
+        </div>
+
+      </div><!-- /contact-layout -->
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER - Pie de página
+       Información del autor y créditos del módulo
+  ============================================= -->
+  <footer class="footer">
+    <div class="footer-content">
+      <!-- Logo y descripción corta -->
+      <div class="footer-logo">
+        <span class="logo-icon">⚔</span>
+        <span>DevWeb Module</span>
+      </div>
+      <p class="footer-text">
+        Página informativa del módulo de Desarrollo Web. 
+        Construida con HTML5, CSS3 y JavaScript vanilla.
+      </p>
+      <!-- Crédito del año -->
+      <p class="footer-copy">© <span id="year"></span> Módulo Desarrollo Web<a/p>
+    </div>
+  </footer>
+
+  <!-- =============================================
+       SCRIPT PRINCIPAL
+       Se carga al final del body para no bloquear el render
+       Contiene toda la lógica de animaciones e interactividad
+  ============================================= -->
+  <script src="script.js"></script>
+
+</body>
+</html>
