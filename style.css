@@ -1,0 +1,1432 @@
+/* ================================================
+   style.css — Hoja de Estilos Principal
+   Módulo: Desarrollo Web
+   
+   Organización del archivo:
+   1. Variables CSS (Design Tokens)
+   2. Reset y Base
+   3. Cursor Personalizado (Espada)
+   4. Canvas de Fondo
+   5. Navbar / Menú de Navegación
+   6. Sección Hero
+   7. Secciones Generales
+   8. Tarjetas de Concepto
+   9. Tecnologías y Barras de Progreso
+   10. Línea de Tiempo
+   11. Herramientas
+   12. Recursos
+   13. Footer
+   14. Animaciones Keyframes
+   15. Media Queries (Responsividad)
+================================================ */
+
+/* ================================================
+   1. VARIABLES CSS — Design Tokens
+   Centraliza colores, fuentes y espaciados para
+   fácil mantenimiento y consistencia visual.
+================================================ */
+:root {
+  /* Paleta de grises — tema oscuro metálico */
+  --gray-950: #0d0d0d;
+  --gray-900: #111111;
+  --gray-800: #1a1a1a;
+  --gray-750: #222222;
+  --gray-700: #2a2a2a;
+  --gray-600: #3a3a3a;
+  --gray-500: #555555;
+  --gray-400: #888888;
+  --gray-300: #aaaaaa;
+  --gray-200: #cccccc;
+  --gray-100: #e8e8e8;
+
+  /* Colores de acento — dorado metálico y azul acero */
+  --gold:        #c9a84c;
+  --gold-light:  #e8c76a;
+  --gold-dark:   #8b6914;
+  --steel:       #4a90d9;
+  --steel-light: #6baff0;
+  --danger:      #c0392b;
+  --success:     #27ae60;
+
+  /* Tipografías importadas desde Google Fonts */
+  --font-display: 'Cinzel Decorative', serif;    /* Títulos épicos medievales */
+  --font-heading: 'Orbitron', monospace;         /* Subtítulos techno-futuristas */
+  --font-body:    'Rajdhani', sans-serif;        /* Cuerpo legible y dinámico */
+
+  /* Espaciados del sistema de diseño */
+  --space-xs:  0.25rem;
+  --space-sm:  0.5rem;
+  --space-md:  1rem;
+  --space-lg:  2rem;
+  --space-xl:  4rem;
+  --space-xxl: 8rem;
+
+  /* Bordes y sombras */
+  --border-radius: 4px;
+  --border-color:  rgba(201, 168, 76, 0.2);
+  --shadow-glow:   0 0 20px rgba(201, 168, 76, 0.15);
+  --shadow-card:   0 8px 32px rgba(0,0,0,0.6);
+
+  /* Transiciones suaves */
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================================
+   2. RESET Y BASE
+   Normaliza estilos entre navegadores y establece
+   la base tipográfica y de layout del documento.
+================================================ */
+
+/* Selecciona todos los elementos para resetear */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Modelo de caja consistente */
+}
+
+/* Cursor personalizado: oculta el cursor por defecto del sistema */
+* {
+  cursor: none !important;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth; /* Desplazamiento suave al hacer click en anclas */
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--gray-900);
+  color: var(--gray-200);
+  line-height: 1.7;
+  overflow-x: hidden;  /* Evita scroll horizontal no deseado */
+  position: relative;
+}
+
+/* Estilos base para listas */
+ul {
+  list-style: none;
+}
+
+/* Estilos base para enlaces */
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color var(--transition);
+}
+
+/* Mejora el renderizado de imágenes */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Contenedor máximo centrado para el contenido */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* ================================================
+   3. CURSOR PERSONALIZADO — Espada ⚔
+   Reemplaza el cursor del mouse con una espada SVG
+   que sigue el movimiento del usuario en la pantalla.
+   Posición controlada por JavaScript en script.js
+================================================ */
+
+/* Espada principal — cursor visible */
+.cursor-sword {
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;  /* No interfiere con clicks */
+  z-index: 99999;
+  transform: translate(-4px, -4px) rotate(-45deg);
+  font-size: 24px;
+  line-height: 1;
+  transition: transform 0.1s ease;
+  filter: drop-shadow(0 0 6px var(--gold));
+  user-select: none;
+}
+
+/* El contenido del cursor (⚔) se inyecta por JS */
+.cursor-sword::after {
+  content: '⚔';
+  display: block;
+  font-size: 22px;
+}
+
+/* Estela del cursor — circulo que sigue con retraso */
+.cursor-trail {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: all 0.15s ease;
+  opacity: 0.5;
+}
+
+/* ================================================
+   4. CANVAS DE FONDO — Puntos Cayendo
+   El elemento canvas se posiciona fijo detrás de
+   todo el contenido. JavaScript dibuja los puntos.
+================================================ */
+#bgCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;          /* Detrás de todo el contenido */
+  pointer-events: none; /* No bloquea interacciones */
+  opacity: 0.6;
+}
+
+/* ================================================
+   5. NAVBAR — Barra de Navegación Principal
+   Se mantiene fija en la parte superior de la pantalla.
+   Cambia de apariencia al hacer scroll (controlado por JS).
+================================================ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;  /* Encima de todo el contenido */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2.5rem;
+  background: rgba(13, 13, 13, 0.6);
+  backdrop-filter: blur(12px);          /* Efecto vidrio esmerilado */
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  transition: all var(--transition);
+}
+
+/* Estado activo del navbar al hacer scroll */
+.navbar.scrolled {
+  padding: 0.8rem 2.5rem;
+  background: rgba(13, 13, 13, 0.95);
+  box-shadow: var(--shadow-glow);
+}
+
+/* LOGO — Identidad visual del módulo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+}
+
+/* Icono de espada del logo */
+.logo-icon {
+  font-size: 1.5rem;
+  animation: swordSpin 4s ease-in-out infinite; /* Animación rotación sutil */
+}
+
+/* Texto del logo */
+.logo-text {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* LINKS DE NAVEGACIÓN — Menú horizontal */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Cada item del menú de navegación */
+.nav-item {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  color: var(--gray-300);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Línea inferior decorativa — aparece al hover */
+.nav-item::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: var(--gold);
+  transition: width var(--transition);
+}
+
+/* Estado hover de los items del menú */
+.nav-item:hover {
+  color: var(--gold);
+  border-color: var(--border-color);
+  background: rgba(201, 168, 76, 0.05);
+}
+
+/* Expandir línea decorativa en hover */
+.nav-item:hover::before {
+  width: 60%;
+}
+
+/* Item del menú activo (sección visible) */
+.nav-item.active {
+  color: var(--gold);
+  border-color: var(--gold-dark);
+  background: rgba(201, 168, 76, 0.1);
+}
+
+/* BOTÓN HAMBURGUESA — Solo visible en móvil */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+/* Líneas del ícono hamburguesa */
+.menu-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--gold);
+  transition: all var(--transition);
+  border-radius: 2px;
+}
+
+/* ================================================
+   6. SECCIÓN HERO — Primera pantalla
+   La pantalla de bienvenida con título principal,
+   subtítulo, botones y estadísticas del módulo.
+================================================ */
+.hero-section {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;  /* Ocupa toda la altura de la ventana */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6rem var(--space-lg) var(--space-xl);
+  overflow: hidden;
+}
+
+/* Luz radial decorativa detrás del hero */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 80vw;
+  background: radial-gradient(ellipse, rgba(201,168,76,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  max-width: 900px;
+}
+
+/* Etiqueta/badge decorativo del hero */
+.hero-badge {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 1.5rem;
+  margin-bottom: var(--space-lg);
+  animation: fadeInDown 0.8s ease forwards;
+}
+
+/* Título principal del hero */
+.hero-title {
+  font-family: var(--font-display);
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  margin-bottom: var(--space-lg);
+}
+
+/* Primera línea del título */
+.title-line {
+  font-size: clamp(3rem, 8vw, 6.5rem); /* Tamaño fluido según viewport */
+  font-weight: 900;
+  color: var(--gray-100);
+  animation: titleReveal 1s ease forwards;
+  opacity: 0;
+  animation-delay: 0.2s;
+  text-shadow: 0 0 40px rgba(255,255,255,0.05);
+}
+
+/* Segunda línea del título — color dorado */
+.title-line.accent {
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: titleReveal 1s ease forwards, shimmer 3s linear infinite;
+  animation-delay: 0.4s, 1.4s;
+  opacity: 0;
+}
+
+/* Subtítulo del hero */
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 300;
+  color: var(--gray-400);
+  max-width: 600px;
+  margin: 0 auto var(--space-lg);
+  line-height: 1.8;
+  animation: fadeInUp 1s ease forwards;
+  animation-delay: 0.6s;
+  opacity: 0;
+}
+
+/* Contenedor de botones del hero */
+.hero-buttons {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-xl);
+  animation: fadeInUp 1s ease forwards;
+  animation-delay: 0.8s;
+  opacity: 0;
+}
+
+/* BOTONES — Estilos base y variantes */
+.btn {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.9rem 2.2rem;
+  border-radius: var(--border-radius);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Efecto de brillo al pasar el mouse por los botones */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%; /* El brillo pasa de izquierda a derecha */
+}
+
+/* Botón primario — fondo dorado */
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  background-size: 200% auto;
+  color: var(--gray-950);
+  font-weight: 700;
+  border: 1px solid var(--gold);
+}
+
+.btn-primary:hover {
+  background-position: right center;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(201,168,76,0.35);
+}
+
+/* Botón fantasma — solo borde */
+.btn-ghost {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--border-color);
+}
+
+.btn-ghost:hover {
+  background: rgba(201,168,76,0.08);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+/* ESTADÍSTICAS del hero */
+.hero-stats {
+  display: flex;
+  gap: var(--space-xl);
+  justify-content: center;
+  animation: fadeInUp 1s ease forwards;
+  animation-delay: 1s;
+  opacity: 0;
+}
+
+/* Cada bloque de estadística */
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Número de la estadística — animado por JS */
+.stat-number {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+/* Etiqueta de la estadística */
+.stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-top: 0.25rem;
+}
+
+/* Indicador de scroll animado */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--gray-500);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Flecha animada del scroll indicator */
+.scroll-arrow {
+  animation: bounceDown 1.5s ease-in-out infinite;
+}
+
+/* ================================================
+   7. SECCIONES GENERALES
+   Estilos compartidos por todas las secciones
+   del cuerpo de la página (fuera del hero).
+================================================ */
+.section {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-xxl) 0;
+}
+
+/* Sección con fondo alternado más oscuro */
+.section-dark {
+  background: rgba(0,0,0,0.3);
+}
+
+/* Encabezado de sección — centrado y decorado */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+/* Etiqueta pequeña encima del título */
+.section-tag {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: var(--space-md);
+  padding: 0.3rem 1rem;
+  border: 1px solid var(--border-color);
+}
+
+/* Título de cada sección */
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--gray-100);
+  margin-bottom: var(--space-sm);
+  line-height: 1.2;
+}
+
+/* Descripción corta bajo el título de sección */
+.section-desc {
+  font-size: 1.1rem;
+  color: var(--gray-400);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ================================================
+   8. TARJETAS DE CONCEPTO — Sección ¿Qué es?
+   Grid de tres tarjetas con ícono, título y lista.
+================================================ */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+}
+
+/* Tarjeta individual */
+.card {
+  background: var(--gray-800);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Línea superior decorativa que aparece en hover */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0);
+  transition: transform var(--transition);
+}
+
+/* Efecto hover de la tarjeta */
+.card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(201,168,76,0.4);
+  box-shadow: var(--shadow-card), var(--shadow-glow);
+}
+
+/* Línea superior visible al hover */
+.card:hover::before {
+  transform: scaleX(1);
+}
+
+/* Ícono grande de la tarjeta */
+.card-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-md);
+}
+
+/* Título de la tarjeta */
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  margin-bottom: var(--space-sm);
+}
+
+/* Texto descriptivo de la tarjeta */
+.card-text {
+  color: var(--gray-400);
+  font-size: 0.95rem;
+  margin-bottom: var(--space-md);
+  line-height: 1.7;
+}
+
+/* Lista de habilidades dentro de la tarjeta */
+.card-list li {
+  color: var(--gray-300);
+  font-size: 0.9rem;
+  padding: 0.3rem 0;
+  padding-left: 1rem;
+  position: relative;
+}
+
+/* Punto decorativo de cada item de la lista */
+.card-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+}
+
+/* ================================================
+   9. TECNOLOGÍAS — Barras de Progreso
+   Grid de tecnologías con barra de nivel animada.
+   La animación se dispara con IntersectionObserver en JS.
+================================================ */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+/* Contenedor de cada tecnología */
+.tech-item {
+  background: var(--gray-800);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  transition: border-color var(--transition);
+}
+
+.tech-item:hover {
+  border-color: rgba(201,168,76,0.4);
+}
+
+/* Fila superior: nombre + porcentaje */
+.tech-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+/* Nombre de la tecnología */
+.tech-name {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--gray-100);
+}
+
+/* Porcentaje a la derecha */
+.tech-percent {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* Contenedor de la barra de progreso */
+.tech-bar {
+  height: 4px;
+  background: var(--gray-700);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+/* Relleno animado de la barra de progreso */
+.tech-fill {
+  height: 100%;
+  width: 0;  /* Comienza en 0, se anima por JS */
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+  border-radius: 2px;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+/* Brillo en la punta de la barra */
+.tech-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--gold-light);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--gold);
+}
+
+/* Descripción de la tecnología */
+.tech-desc {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+
+/* Chips de tecnologías adicionales */
+.tech-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: center;
+}
+
+/* Chip individual de tecnología */
+.chip {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  color: var(--gray-300);
+  background: var(--gray-800);
+  transition: all var(--transition);
+}
+
+/* Hover del chip */
+.chip:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201,168,76,0.07);
+  transform: scale(1.05);
+}
+
+/* ================================================
+   10. LÍNEA DE TIEMPO — Estructura del Módulo
+   Línea vertical con puntos numerados y contenido
+   a la derecha de cada punto.
+================================================ */
+.timeline {
+  position: relative;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+/* Línea vertical central de la timeline */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, var(--gold), transparent);
+}
+
+/* Cada item de la línea de tiempo */
+.timeline-item {
+  display: flex;
+  gap: var(--space-lg);
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+/* Punto numerado de la timeline */
+.timeline-dot {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  background: var(--gray-800);
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold);
+  z-index: 1;
+  box-shadow: 0 0 12px rgba(201,168,76,0.2);
+}
+
+/* Contenido de texto del item de timeline */
+.timeline-content {
+  background: var(--gray-800);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.2rem var(--space-lg);
+  flex: 1;
+  transition: all var(--transition);
+}
+
+.timeline-content:hover {
+  border-color: rgba(201,168,76,0.4);
+  transform: translateX(4px);
+}
+
+/* Etiqueta de semanas del item */
+.timeline-tag {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+/* Título del item de timeline */
+.timeline-content h3 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray-100);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+/* Descripción del item de timeline */
+.timeline-content p {
+  font-size: 0.9rem;
+  color: var(--gray-400);
+  line-height: 1.7;
+}
+
+/* ================================================
+   11. HERRAMIENTAS — Tool Cards Grid
+   Grid de categorías de herramientas con tarjetas
+   individuales para cada herramienta mencionada.
+================================================ */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+}
+
+/* Categoría de herramientas */
+.tool-category {
+  background: var(--gray-800);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+}
+
+/* Título de la categoría */
+.tool-cat-title {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Lista de herramientas dentro de la categoría */
+.tool-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* Tarjeta individual de herramienta */
+.tool-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  transition: background var(--transition);
+}
+
+.tool-card:hover {
+  background: var(--gray-700);
+}
+
+/* Ícono de la herramienta */
+.tool-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* Nombre de la herramienta */
+.tool-card strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--gray-100);
+  margin-bottom: 0.2rem;
+}
+
+/* Descripción de la herramienta */
+.tool-card p {
+  font-size: 0.82rem;
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+
+/* ================================================
+   12. RECURSOS — Cards y Caja del Repositorio
+   Grid de categorías de recursos con links y
+   una caja destacada para el repositorio GitHub.
+================================================ */
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+/* Tarjeta de recursos */
+.resource-card {
+  background: var(--gray-800);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  transition: all var(--transition);
+}
+
+.resource-card:hover {
+  border-color: rgba(201,168,76,0.4);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+
+/* Cabecera de la tarjeta de recursos */
+.resource-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.resource-icon {
+  font-size: 1.5rem;
+}
+
+/* Título de la tarjeta de recursos */
+.resource-header h3 {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--gray-100);
+  text-transform: uppercase;
+}
+
+/* Lista de links de recursos */
+.resource-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Link individual de recurso */
+.resource-links a {
+  font-size: 0.9rem;
+  color: var(--gray-400);
+  padding: 0.3rem 0;
+  border-bottom: 1px solid transparent;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Flecha que aparece al hover en el link */
+.resource-links a::before {
+  content: '→';
+  color: var(--gold);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all var(--transition);
+}
+
+.resource-links a:hover {
+  color: var(--gold);
+  border-bottom-color: var(--border-color);
+  padding-left: 0.5rem;
+}
+
+.resource-links a:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Caja destacada del repositorio */
+.repo-box {
+  background: linear-gradient(135deg, var(--gray-800), var(--gray-750));
+  border: 1px solid var(--gold-dark);
+  border-radius: var(--border-radius);
+  padding: var(--space-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Brillo decorativo de la caja del repositorio */
+.repo-box::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+}
+
+/* Ícono grande del repositorio */
+.repo-icon {
+  font-size: 4rem;
+  flex-shrink: 0;
+}
+
+/* Título del repositorio */
+.repo-info h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--gold);
+  margin-bottom: var(--space-sm);
+}
+
+/* Texto descriptivo del repositorio */
+.repo-info p {
+  color: var(--gray-400);
+  margin-bottom: var(--space-md);
+  line-height: 1.7;
+}
+
+/* ================================================
+   13. FOOTER — Pie de Página
+   Área simple con logo, descripción y copyright.
+================================================ */
+.footer {
+  position: relative;
+  z-index: 1;
+  background: var(--gray-950);
+  border-top: 1px solid var(--border-color);
+  padding: var(--space-xl) 0;
+  text-align: center;
+}
+
+.footer-content {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* Logo del footer */
+.footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-md);
+}
+
+/* Texto descriptivo del footer */
+.footer-text {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  line-height: 1.7;
+  margin-bottom: var(--space-md);
+}
+
+/* Copyright */
+.footer-copy {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--gray-600);
+  text-transform: uppercase;
+}
+
+/* ================================================
+   14. ANIMACIONES KEYFRAMES
+   Definición de todas las animaciones CSS utilizadas
+   en los elementos de la página.
+================================================ */
+
+/* Aparece desde arriba */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Aparece desde abajo */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Revela el título del hero */
+@keyframes titleReveal {
+  from { opacity: 0; transform: translateY(30px) skewY(2deg); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0) skewY(0); filter: blur(0); }
+}
+
+/* Efecto de brillo deslizante en el texto dorado */
+@keyframes shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Pulsación suave */
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+/* Rebote hacia abajo de la flecha */
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(6px); }
+}
+
+/* Rotación sutil del ícono del logo */
+@keyframes swordSpin {
+  0%, 100% { transform: rotate(0deg); }
+  25%       { transform: rotate(-10deg); }
+  75%       { transform: rotate(10deg); }
+}
+
+/* Destello de brillo en elementos al hacer hover */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(201,168,76,0.2); }
+  50%       { box-shadow: 0 0 25px rgba(201,168,76,0.5); }
+}
+
+/* Entrada de elementos observados con IntersectionObserver */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ================================================
+   12b. CONTACTO — Formulario y Tarjetas de Info
+================================================ */
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  background: var(--gray-800);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1rem 1.2rem;
+  transition: all var(--transition);
+}
+.contact-card:hover {
+  border-color: rgba(201,168,76,0.4);
+  transform: translateX(4px);
+}
+.contact-icon { font-size: 1.6rem; flex-shrink: 0; }
+.contact-detail { display: flex; flex-direction: column; gap: 0.15rem; }
+.contact-label {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+}
+.contact-value { font-size: 0.92rem; color: var(--gray-300); transition: color var(--transition); }
+a.contact-value:hover { color: var(--gold); }
+
+/* Redes sociales */
+.contact-socials {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--gray-800);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1rem 1.2rem;
+}
+.social-links { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
+.social-btn {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  background: var(--gray-700);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: all var(--transition);
+}
+.social-btn:hover {
+  background: rgba(201,168,76,0.12);
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(201,168,76,0.2);
+}
+
+/* Formulario */
+.contact-form-wrapper {
+  background: var(--gray-800);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--space-xl);
+}
+.contact-form { display: flex; flex-direction: column; gap: var(--space-md); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-label {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.form-input {
+  background: var(--gray-750);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  color: var(--gray-200);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+  width: 100%;
+  appearance: none;
+}
+.form-input::placeholder { color: var(--gray-600); }
+.form-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+}
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23c9a84c' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+.form-select option { background: var(--gray-800); color: var(--gray-200); }
+.form-textarea { resize: vertical; min-height: 130px; line-height: 1.7; }
+.btn-full { width: 100%; justify-content: center; padding: 1rem; font-size: 0.8rem; }
+.form-success {
+  display: none;
+  background: rgba(39,174,96,0.12);
+  border: 1px solid rgba(39,174,96,0.4);
+  border-radius: var(--border-radius);
+  color: var(--success);
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  padding: 0.9rem 1.2rem;
+  text-align: center;
+  animation: fadeInUp 0.4s ease;
+}
+
+/* ================================================
+   15. MEDIA QUERIES — Diseño Responsivo
+   Adapta el layout para pantallas pequeñas (móvil).
+   Breakpoint principal: 768px
+================================================ */
+@media (max-width: 768px) {
+
+  /* Muestra el botón hamburguesa en móvil */
+  .menu-toggle {
+    display: flex;
+  }
+
+  /* Menú de navegación oculto en móvil por defecto */
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;  /* Fuera de la pantalla */
+    height: 100vh;
+    width: 260px;
+    background: var(--gray-950);
+    border-left: 1px solid var(--border-color);
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1rem;
+    transition: right var(--transition);
+  }
+
+  /* Menú abierto en móvil — desliza desde la derecha */
+  .nav-links.open {
+    right: 0;
+  }
+
+  /* Ajuste del navbar en móvil */
+  .navbar {
+    padding: 1rem 1.5rem;
+  }
+
+  /* Estadísticas del hero en columna */
+  .hero-stats {
+    gap: var(--space-lg);
+  }
+
+  /* Número de stat más pequeño */
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  /* Grid de tarjetas en columna única */
+  .cards-grid,
+  .tech-grid,
+  .tools-grid,
+  .resources-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Caja del repositorio en columna */
+  .repo-box {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-lg);
+  }
+
+  /* Grid de contacto en columna única */
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* Fila del formulario en columna única */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Padding reducido del wrapper del formulario */
+  .contact-form-wrapper {
+    padding: var(--space-lg);
+  }
+
+  /* Margen reducido en secciones */
+  .section {
+    padding: var(--space-xl) 0;
+  }
+}
